@@ -63,25 +63,6 @@ del /f /q "C:\Users\%USERNAME%\Desktop\Microsoft Edge.lnk" 1>NUL 2>NUL
 :: Delete "Your Phone" shortcut from Desktop
 del /f /q "C:\Users\%USERNAME%\Desktop\Your Phone.lnk" 1>NUL 2>NUL
 
-:: Clean up taskbar
-del /f /s /q /a "%AppData%\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\*" 1>NUL 2>NUL
-reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Taskband" /f 1>NUL 2>NUL
-
-:: Change Lock screen background
-takeown /f "C:\ProgramData\Microsoft\Windows\SystemData" /r /a /d Y 1>NUL 2>NUL
-icacls "C:\ProgramData\Microsoft\Windows\SystemData" /grant Administrators:(OI)(CI)F /T 1>NUL 2>NUL
-icacls "C:\ProgramData\Microsoft\Windows\SystemData\S-1-5-18\ReadOnly" /reset /T 1>NUL 2>NUL
-del /q "C:\ProgramData\Microsoft\Windows\SystemData\S-1-5-18\ReadOnly\LockScreen_Z\*" 1>NUL 2>NUL
-takeown /f "C:\Windows\Web\Screen" /r /a /d Y 1>NUL 2>NUL
-icacls "C:\Windows\Web\Screen" /grant Administrators:(OI)(CI)F /T 1>NUL 2>NUL
-icacls "C:\Windows\Web\Screen" /reset /T 1>NUL 2>NUL
-copy /y "C:\Windows\Web\Screen\img100.jpg" "C:\Windows\Web\Screen\img200.jpg" 1>NUL 2>NUL
-copy /y "C:\Windows\Custom\background.jpg" "C:\Windows\Web\Screen\img100.jpg" 1>NUL 2>NUL
-
-:: Change Desktop background
-reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v "Wallpaper" /t REG_SZ /d "C:\Windows\Custom\background.jpg" /f 1>NUL 2>NUL
-rundll32.exe user32.dll,UpdatePerUserSystemParameters
-
 :: Disable Services
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\dmwappushsvc" /v "Start" /t REG_DWORD /d "4" /f 1>NUL 2>NUL
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\dmwappushservice" /v "Start" /t REG_DWORD /d "4" /f 1>NUL 2>NUL
