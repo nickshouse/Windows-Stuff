@@ -20,9 +20,6 @@ The thing it does is listed here.
  - Set Hibernation type to Reduced
  - Delete "Microsoft Edge" shortcut from Desktop
  - Delete "Your Phone" shortcut from Desktop
- - Clean up taskbar
- - Change Lock screen background
- - Change Desktop background
  - Disable some Services
  - Enable Developer mode (not in partial and minimal scripts)
  - Change Folder options
