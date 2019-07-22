@@ -1,3 +1,3 @@
-# Windows-10
+# Windows 10 optimization script
 
-You need to put setACL.exe in system32 folder to continue for now.
+Will be updated with details
