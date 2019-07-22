@@ -1,4 +1,28 @@
 @echo off
+:: BatchGotAdmin
+::-------------------------------------
+REM  --> Check for permissions
+>nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
+
+REM --> If error flag set, we do not have admin.
+if '%errorlevel%' NEQ '0' (
+    echo Requesting administrative privileges...
+    goto UACPrompt
+) else ( goto gotAdmin )
+
+:UACPrompt
+    echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
+    set params = %*:"="
+    echo UAC.ShellExecute "cmd.exe", "/c %~s0 %params%", "", "runas", 1 >> "%temp%\getadmin.vbs"
+
+    "%temp%\getadmin.vbs"
+    del "%temp%\getadmin.vbs"
+    exit /B
+
+:gotAdmin
+    pushd "%CD%"
+    CD /D "%~dp0"
+::--------------------------------------
 
 title Optimization
 echo Applying prerequisites...
@@ -19,6 +43,11 @@ rd "%LocalAppData%\Microsoft\OneDrive" /Q /S 1>NUL 2>NUL
 rd "%ProgramData%\Microsoft OneDrive" /Q /S 1>NUL 2>NUL
 rd "C:\OneDriveTemp" /Q /S 1>NUL 2>NUL
 
+:: Add environmental variables
+setx ProgramFiles "C:\Program Files" /m 1>NUL 2>NUL
+setx ProgramFiles86 "C:\Program Files (x86)" /m 1>NUL 2>NUL
+setx ProgramData "C:\ProgramData" /m 1>NUL 2>NUL
+
 :: Hide PerfLogs folder
 attrib "C:\PerfLogs" +h 1>NUL 2>NUL
 
@@ -38,10 +67,33 @@ del /f /q "C:\Users\%USERNAME%\Desktop\Your Phone.lnk" 1>NUL 2>NUL
 del /f /s /q /a "%AppData%\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\*" 1>NUL 2>NUL
 reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Taskband" /f 1>NUL 2>NUL
 
+:: Change Lock screen background
+takeown /f "C:\ProgramData\Microsoft\Windows\SystemData" /r /a /d Y 1>NUL 2>NUL
+icacls "C:\ProgramData\Microsoft\Windows\SystemData" /grant Administrators:(OI)(CI)F /T 1>NUL 2>NUL
+icacls "C:\ProgramData\Microsoft\Windows\SystemData\S-1-5-18\ReadOnly" /reset /T 1>NUL 2>NUL
+del /q "C:\ProgramData\Microsoft\Windows\SystemData\S-1-5-18\ReadOnly\LockScreen_Z\*" 1>NUL 2>NUL
+takeown /f "C:\Windows\Web\Screen" /r /a /d Y 1>NUL 2>NUL
+icacls "C:\Windows\Web\Screen" /grant Administrators:(OI)(CI)F /T 1>NUL 2>NUL
+icacls "C:\Windows\Web\Screen" /reset /T 1>NUL 2>NUL
+copy /y "C:\Windows\Web\Screen\img100.jpg" "C:\Windows\Web\Screen\img200.jpg" 1>NUL 2>NUL
+copy /y "C:\Windows\Custom\background.jpg" "C:\Windows\Web\Screen\img100.jpg" 1>NUL 2>NUL
+
+:: Change Desktop background
+reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v "Wallpaper" /t REG_SZ /d "C:\Windows\Custom\background.jpg" /f 1>NUL 2>NUL
+rundll32.exe user32.dll,UpdatePerUserSystemParameters
+
 :: Disable Services
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\dmwappushsvc" /v "Start" /t REG_DWORD /d "4" /f 1>NUL 2>NUL
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\dmwappushservice" /v "Start" /t REG_DWORD /d "4" /f 1>NUL 2>NUL
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\PeerDistSvc" /v "Start" /t REG_DWORD /d "4" /f 1>NUL 2>NUL
+
+:: Enable Developer mode
+::reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" /v "AllowDevelopmentWithoutDevLicense" /t REG_DWORD /d "1" /f 1>NUL 2>NUL
+::reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" /v "AllowAllTrustedApps" /t REG_DWORD /d "1" /f 1>NUL 2>NUL
+
+:: Change Folder options
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "ShowStatusBar" /t REG_DWORD /d "1" /f 1>NUL 2>NUL
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "HideFileExt" /t REG_DWORD /d "0" /f 1>NUL 2>NUL
 
 :: Disable Slideshow during Lock Screen
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Lock Screen" /v "SlideshowEnabled" /t REG_DWORD /d "0" /f 1>NUL 2>NUL
@@ -150,11 +202,8 @@ reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v "MicrophoneC
 reg add "HKCU\Software\Microsoft\GameBar" /v "AutoGameModeEnabled" /t REG_DWORD /d "0" /f 1>NUL 2>NUL
 reg add "HKCU\Software\Microsoft\GameBar" /v "AllowAutoGameMode" /t REG_DWORD /d "0" /f 1>NUL 2>NUL
 
-:: Notify when Windows updates are available
-reg add "HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "AUOptions" /t REG_DWORD /d "2" /f 1>NUL 2>NUL
-
-:: Change Windows Update branch readiness level to Semi-Annual Channel
-reg add "HKLM\Software\Microsoft\WindowsUpdate\UX\Settings" /v "BranchReadinessLevel" /t REG_DWORD /d "32" /f 1>NUL 2>NUL
+:: Disable automatic updates
+reg add "HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU" /v "NoAutoUpdate" /t REG_DWORD /d "1" /f 1>NUL 2>NUL
 
 :: Change Performance Options to Adjust for best appearence
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v "VisualFXSetting" /t REG_DWORD /d "1" /f 1>NUL 2>NUL
@@ -197,6 +246,7 @@ reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v "CortanaConse
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Windows Search" /v "CortanaConsent" /t REG_DWORD /d "0" /f 1>NUL 2>NUL
 reg add "HKLM\Software\Policies\Microsoft\Windows\Windows Search" /v "AllowCortana" /t REG_DWORD /d "0" /f 1>NUL 2>NUL
 reg add "HKLM\Software\Policies\Microsoft\Windows\Windows Search" /v "DisableWebSearch" /t REG_DWORD /d "1" /f 1>NUL 2>NUL
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\OOBE" /v "DisableVoice" /t REG_DWORD /d "1" /f 1>NUL 2>NUL
 
 :: Disable JPEG wallpaper quality reducion
 reg add "HKCU\Control Panel\Desktop" /v "JPEGImportQuality" /t REG_DWORD /d "100" /f 1>NUL 2>NUL
@@ -419,9 +469,6 @@ reg delete "HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\
 :: Disable search history in File Explorer
 reg add "HKCU\Software\Policies\Microsoft\Windows\Explorer" /v "DisableSearchBoxSuggestions" /t REG_DWORD /d "1" /f 1>NUL 2>NUL
 
-:: Set File Explorer starting folder to This PC
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "LaunchTo" /t REG_DWORD /d "1" /f 1>NUL 2>NUL
-
 :: Remove OneDrive from Navigation Pane
 reg add "HKCR\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" /v "System.IsPinnedToNameSpaceTree" /t REG_DWORD /d "0" /f 1>NUL 2>NUL
 
@@ -544,7 +591,7 @@ reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer" /v "ShowRecent
 reg add "HKLM\Software\Policies\Microsoft\Windows\System" /v "EnableActivityFeed" /t REG_DWORD /d "0" /f 1>NUL 2>NUL
 
 :: Enable clipboard history
-reg add "HKEY_CURRENT_USER\Software\Microsoft\Clipboard" /v "EnableClipboardHistory" /t REG_DWORD /d "1" /f 1>NUL 2>NUL
+reg add "HKCU\Software\Microsoft\Clipboard" /v "EnableClipboardHistory" /t REG_DWORD /d "1" /f 1>NUL 2>NUL
 
 :: Set OEM logo
 reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\OEMInformation" /v "Logo" /t REG_SZ /d "C:\Windows\Custom\logo.bmp" /f 1>NUL 2>NUL
@@ -593,6 +640,9 @@ reg add "HKCU\Software\Microsoft\Windows\DWM" /v "ColorPrevalence" /t REG_DWORD 
 
 :: Change inactive title bar color to grey
 reg add "HKCU\Software\Microsoft\Windows\DWM" /v "AccentColorInactive" /t REG_DWORD /d "4280953386" /f 1>NUL 2>NUL
+
+:: Remove acrylic blur on sign-in screen
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v "DisableAcrylicBackgroundOnLogon" /t REG_DWORD /d "1" /f 1>NUL 2>NUL
 
 :: Remove potential bloat
 powershell.exe "Get-AppxPackage *Microsoft.3DBuilder* | Remove-AppxPackage"
@@ -804,8 +854,6 @@ powershell.exe "Get-AppxProvisionedPackage -Online | where Displayname -EQ *Micr
 :: Apply Classic Shell settings
 cd C:\Program Files\Classic Shell 1>NUL 2>NUL
 ClassicStartMenu.exe -xml "C:\Windows\Custom\startmenu.xml" 1>NUL 2>NUL
-ClassicExplorerSettings.exe -xml "C:\Windows\Custom\explorer.xml" 1>NUL 2>NUL
-reg add "HKCU\Software\Microsoft\Internet Explorer\Toolbar\ShellBrowser" /v "ITBar7Layout" /t REG_BINARY /d "13 00 00 00 00 00 00 00 00 00 00 00 20 00 00 00 10 00 00 00 00 00 00 00 01 00 00 00 01 07 00 00 5E 01 00 00 06 00 00 00 08 05 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 B7 91 38 55 D5 A0 26 45 BE 18 D3 CE 46 1D 63 10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00" /f 1>NUL 2>NUL
 
 :: Delete startup shortcut
 del /f /q "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\startup.bat" 1>NUL 2>NUL
