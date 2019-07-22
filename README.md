@@ -21,7 +21,7 @@ The thing it does is listed here.
  - Delete "Microsoft Edge" shortcut from Desktop
  - Delete "Your Phone" shortcut from Desktop
  - Disable some Services
- - Enable Developer mode (not in partial and minimal scripts)
+ - Enable Developer mode (disabled due to unwanted issues)
  - Change Folder options
  - Disable Slideshow during Lock Screen
  - Enable Dark Mode
