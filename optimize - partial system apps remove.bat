@@ -63,10 +63,6 @@ del /f /q "C:\Users\%USERNAME%\Desktop\Microsoft Edge.lnk" 1>NUL 2>NUL
 :: Delete "Your Phone" shortcut from Desktop
 del /f /q "C:\Users\%USERNAME%\Desktop\Your Phone.lnk" 1>NUL 2>NUL
 
-:: Change Desktop background
-reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v "Wallpaper" /t REG_SZ /d "C:\Windows\Custom\background.jpg" /f 1>NUL 2>NUL
-rundll32.exe user32.dll,UpdatePerUserSystemParameters
-
 :: Disable Services
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\dmwappushsvc" /v "Start" /t REG_DWORD /d "4" /f 1>NUL 2>NUL
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\dmwappushservice" /v "Start" /t REG_DWORD /d "4" /f 1>NUL 2>NUL
