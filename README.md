@@ -5,10 +5,16 @@ This script removes potential bloatware comes with Windows 10 and optimizes some
 
 ### How to use
 Clone or download zip this repo, simply unzip it and run `optimize.bat` file. 
+
 `optimize.bat` is recommended for use after clean Windows install.
+
 `optimize - partial system apps remove.bat` is recommended for average users, recommended for running Windows installation.
+
 `optimize - minimal no apps remove.bat` is recommended for Windows fanboys who likes to keep apps and don't want to change anything.
+
 `enable UAC.bat` is a simple script to enable UAC who likes to keep it.
+
+Please verify the SHA256 hash of `SetACL.exe` with the given one to verify the integrity of the file.
 
 ### What does it optimizes?
 The thing it does is listed here.
