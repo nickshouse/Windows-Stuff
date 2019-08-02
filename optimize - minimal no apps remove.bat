@@ -24,7 +24,7 @@ if '%errorlevel%' NEQ '0' (
     CD /D "%~dp0"
 ::--------------------------------------
 
-title Optimization
+title Optimization_Windows_10_minimal
 echo Applying prerequisites...
 echo Please wait a few minutes...
 
