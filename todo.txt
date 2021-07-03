@@ -1,0 +1,12 @@
+[✔] Remove scheduled tasks
+[✔] Research unattend/autounattend xmls
+[✔] Research OEM default app associations
+[✔] Research other OEM related things
+[✔] Compact OS
+[X] Uninstall Microsoft.MicrosoftEdge_8wekyb3d8bbwe
+[X] Uninstall Microsoft.MicrosoftEdgeDevToolsClient_8wekyb3d8bbwe
+[X] Uninstall Microsoft.Windows.SecHealthUI_cw5n1h2txyewy
+[X] Uninstall Microsoft.PPIProjection_cw5n1h2txyewy
+[X] Create SetupComplete.cmd
+[X] Disable even more things in OOBE
+[X] Further reduce size without breaking features

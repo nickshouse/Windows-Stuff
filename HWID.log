@@ -1,0 +1,76 @@
+System check:
+Description: Windows(R) Operating System, VOLUME_KMSCLIENT channel
+BuildLabEx: 17763.1282
+Architecture: x64
+PartialKey: J462D
+Edition: EnterpriseS
+Status Notification
+
+Starting activation at 11 Jun 2020 18:50:57...
+
+Installing key M7XTQ-FN8P6-TTKYV-9D4CC-J462D...
+Installed product key M7XTQ-FN8P6-TTKYV-9D4CC-J462D successfully.
+
+Setting KMS Host IP to avoid DNS queries...
+Key Management Service machine name set to 192.0.2.69:1833 successfully.
+
+Generating ticket for KMS38
+
+Applying GenuineTicket.xml...
+
+Done.
+Converted license Microsoft.Windows.125.X21-83261_8wekyb3d8bbwe and stored at C:\ProgramData\Microsoft\Windows\ClipSvc\Install\Migration\d73b694d-ee4d-4a19-8f29-3192601a7871.xml.
+Successfully converted 1 licenses from genuine authorization tickets on disk.
+Done.
+
+Ticket apply successful.
+
+WU is enabled: MANUAL Functional [Start: 0]
+
+ClipSVC is enabled: MANUAL Functional [Start: 0]
+
+wlidsvc is enabled: MANUAL Functional [Start: 0]
+
+sppsvc is enabled: AUTO Functional
+
+Successfully activated EnterpriseS!
+
+
+System check:
+Description: Windows(R) Operating System, VOLUME_KMSCLIENT channel
+BuildLabEx: 17763.1397
+Architecture: x64
+PartialKey: J462D
+Edition: EnterpriseS
+Status Notification
+
+Starting activation at 20 Aug 2020 17:43:00...
+
+Installing key M7XTQ-FN8P6-TTKYV-9D4CC-J462D...
+Installed product key M7XTQ-FN8P6-TTKYV-9D4CC-J462D successfully.
+
+Setting KMS Host IP to avoid DNS queries...
+Key Management Service machine name set to 192.0.2.69:1833 successfully.
+
+Generating ticket for KMS38
+
+Applying GenuineTicket.xml...
+
+Done.
+Converted license Microsoft.Windows.125.X21-83261_8wekyb3d8bbwe and stored at C:\ProgramData\Microsoft\Windows\ClipSvc\Install\Migration\b8fffeb0-bbd0-4a40-bd5d-e1386cff928d.xml.
+Successfully converted 1 licenses from genuine authorization tickets on disk.
+Done.
+
+Ticket apply successful.
+
+WU is enabled: MANUAL Functional [Start: 0]
+
+ClipSVC is enabled: MANUAL Functional [Start: 0]
+
+wlidsvc is enabled: MANUAL Functional [Start: 0]
+
+sppsvc is enabled: AUTO Functional
+
+Successfully activated EnterpriseS!
+
+

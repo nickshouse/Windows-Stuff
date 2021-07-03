@@ -1,0 +1,26 @@
+Resources:
+Original Guide - https://www.tenforums.com/tutorials/72031-create-windows-10-iso-image-existing-installation.html
+Reg Parameters - https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/reg
+Registry Value Types - https://docs.microsoft.com/en-us/windows/desktop/sysinfo/registry-value-types
+Cmd Parameters - https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/cmd
+Del Parameters - https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/del
+Delete Scheduled Tasks - https://docs.microsoft.com/en-us/windows/desktop/taskschd/schtasks#deleting-a-task
+Takeown Parameters - https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/takeown
+Copy Parameters - https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/copy
+Icacls Parameters - https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/icacls
+Settings Parameters - https://docs.microsoft.com/en-us/windows/uwp/launch-resume/launch-settings-app
+$OEM$ Folder - https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/wsim/distribution-shares-and-configuration-sets-overview
+
+Export Index:
+dism /Get-WimInfo /wimfile:"E:\Program Files\Windows\extract\custom\sources\install.esd"
+dism /Export-Image /SourceImageFile:"E:\Program Files\Windows\install.esd" /SourceIndex:6 /DestinationImageFile:"D:\Program Files\Windows\install.esd"
+
+Capture Image:
+dism /Capture-Image /imagefile:"C:\install.wim" /capturedir:H:\ /name:"Windows 10 LTSC" /compress:max /checkintegrity /verify /bootable
+
+Create ISO:
+cd "C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools\amd64\Oscdimg"
+oscdimg -uv -u1 -b"E:\Windows\boot\etfsboot.com" "E:\Windows" "C:\Win10Pro64.iso"
+
+Disable Command Bar:
+https://virtualcustoms.net/showthread.php/34972-How-to-Auto-Hide-or-Disable-Command-Bar-%28aka-Folder-Band%29
