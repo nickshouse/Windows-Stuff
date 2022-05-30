@@ -15,17 +15,6 @@ reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments" /v
 :: Disable Open File security warning
 reg add "HKLM\Software\Policies\Microsoft\Internet Explorer\Security" /v "DisableSecuritySettingsCheck" /t "REG_DWORD" /d "00000001" /f 1>NUL 2>NUL
 
-:: Uninstall OneDrive
-taskkill /F /IM "OneDrive.exe"
-%SystemRoot%\SysWOW64\OneDriveSetup.exe /uninstall
-rd "%UserProfile%\OneDrive" /Q /S
-rd "%LocalAppData%\Microsoft\OneDrive" /Q /S
-rd "%ProgramData%\Microsoft OneDrive" /Q /S
-rd "C:\OneDriveTemp" /Q /S
-
-:: Remove OneDrive from Navigation Pane
-reg add "HKCR\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" /v "System.IsPinnedToNameSpaceTree" /t REG_DWORD /d "0" /f
-
 :: Hide PerfLogs folder
 attrib "C:\PerfLogs" +h
 
@@ -105,6 +94,9 @@ powershell.exe Set-ExecutionPolicy RemoteSigned
 
 :: Remove external drives from Navigation Pane
 reg delete "HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}" /f
+
+:: Disable first login animation
+reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v "EnableFirstLogonAnimation" /t REG_DWORD /d "0" /f 1>NUL 2>NUL
 
 :: Enable Num-lock at login screen
 reg add "HKEY_USERS\.DEFAULT\Control Panel\Keyboard" /v "InitialKeyboardIndicators" /t REG_SZ /d "2147483650" /f
