@@ -1,0 +1,19 @@
+Display switch fix for Windows 11 update EG:Windows 11 22h2 build 22621.382
+
+Instal Extract display switch to anywhere on your PC.
+EG:I will use desktop 
+
+
+Method: Manually Create "Display Switch" Shortcuts
+
+1) Right click on desktop, click on new and then click on shortcuts.
+2) Type the location of the item or copy and paste from below, then click on next.
+3) Type "Display Switch or give your own name"for the name, and click on the Finish button.
+4) You can pin the shortcut to Taskbar or Start Menu, you may assign a keyboard shortcut to it as well.
+
+
+
+C:\Users\yournamehere\Desktop\DisplaySwitch.exe /internal
+C:\Users\yournamehere\Desktop\DisplaySwitch.exe /external
+C:\Users\yournamehere\Desktop\DisplaySwitch.exe /extend
+C:\Users\yournamehere\Desktop\DisplaySwitch.exe /clone
